@@ -1,0 +1,284 @@
+0    [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ArchitectUtils  - Log4J configured successfully
+390  [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Beginning to read/merge new pl.ini data
+440  [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Finished reading file.
+441  [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Beginning to read/merge new pl.ini data
+481  [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Finished reading file.
+22172 [Thread-5] ERROR ca.sqlpower.architect.swingui.action.CheckForUpdateAction  - Fail to retrieve current version number!
+64128 [AWT-EventQueue-0] WARN  ca.sqlpower.sqlobject.ForeignKeyColumnUpdaterPoolingSPListener  - Warning: unknown SQLTypePhysicalProperties property name changed while monitoring pkTable
+64130 [AWT-EventQueue-0] WARN  ca.sqlpower.sqlobject.ForeignKeyColumnUpdaterPoolingSPListener  - Warning: unknown UserDefinedSQLType property myAutoIncrement changed while monitoring pkTable
+70340 [AWT-EventQueue-0] WARN  ca.sqlpower.sqlobject.ForeignKeyColumnUpdaterPoolingSPListener  - Warning: unknown SQLTypePhysicalProperties property name changed while monitoring pkTable
+70341 [AWT-EventQueue-0] WARN  ca.sqlpower.sqlobject.ForeignKeyColumnUpdaterPoolingSPListener  - Warning: unknown UserDefinedSQLType property myAutoIncrement changed while monitoring pkTable
+77501 [AWT-EventQueue-0] WARN  ca.sqlpower.sqlobject.ForeignKeyColumnUpdaterPoolingSPListener  - Warning: unknown SQLTypePhysicalProperties property name changed while monitoring pkTable
+77501 [AWT-EventQueue-0] WARN  ca.sqlpower.sqlobject.ForeignKeyColumnUpdaterPoolingSPListener  - Warning: unknown UserDefinedSQLType property myAutoIncrement changed while monitoring pkTable
+130940 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+CREATE TABLE public.dim_data (
+                sk_data INTEGER NOT NULL,
+                nk_data DATE NOT NULL,
+                desc_data_completa VARCHAR(60) NOT NULL,
+                nr_ano INTEGER NOT NULL,
+                nm_trimestre VARCHAR(20) NOT NULL,
+                nr_ano_trimestre VARCHAR(20) NOT NULL,
+                nr_mes INTEGER NOT NULL,
+                nm_mes VARCHAR(20) NOT NULL,
+                ano_mes VARCHAR(20) NOT NULL,
+                nr_semana INTEGER NOT NULL,
+                ano_semana VARCHAR(20) NOT NULL,
+                nr_dia INTEGER NOT NULL,
+                nr_dia_ano INTEGER NOT NULL,
+                nm_dia_semana VARCHAR(20) NOT NULL,
+                flag_final_semana CHAR(3) NOT NULL,
+                flag_feriado CHAR(3) NOT NULL,
+                nm_feriado VARCHAR(60) NOT NULL,
+                etl_dt_inicio TIMESTAMP NOT NULL,
+                etl_dt_fim TIMESTAMP NOT NULL,
+                etl_versao INTEGER,
+                CONSTRAINT sk_data_pk PRIMARY KEY (sk_data)
+)
+130940 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+CREATE SEQUENCE public.dim_filial_sk_filial_seq
+130942 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE TABLE public.dim_filial (
+                sk_filial INTEGER NOT NULL DEFAULT nextval('public.dim_filial_sk_filial_seq'),
+                nk_filial INTEGER NOT NULL,
+                cidade VARCHAR NOT NULL,
+                estado VARCHAR NOT NULL,
+                etl_dt_inicio TIMESTAMP NOT NULL,
+                etl_dt_fim TIMESTAMP NOT NULL,
+                etl_versao INTEGER NOT NULL,
+                CONSTRAINT sk_filial PRIMARY KEY (sk_filial)
+)
+130943 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+ALTER SEQUENCE public.dim_filial_sk_filial_seq OWNED BY public.dim_filial.sk_filial
+130943 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE SEQUENCE public.dim_fornecedor_sk_fornecedor_seq
+130943 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE TABLE public.dim_fornecedor (
+                sk_fornecedor INTEGER NOT NULL DEFAULT nextval('public.dim_fornecedor_sk_fornecedor_seq'),
+                nk_fornecedor INTEGER NOT NULL,
+                cidade VARCHAR NOT NULL,
+                estado VARCHAR NOT NULL,
+                etl_dt_inicio TIMESTAMP NOT NULL,
+                etl_dt_fim TIMESTAMP NOT NULL,
+                etl_versao INTEGER NOT NULL,
+                CONSTRAINT sk_fornecedor PRIMARY KEY (sk_fornecedor)
+)
+130944 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+ALTER SEQUENCE public.dim_fornecedor_sk_fornecedor_seq OWNED BY public.dim_fornecedor.sk_fornecedor
+130944 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE SEQUENCE public.dim_veiculo_sk_veiculo_seq
+130944 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE TABLE public.dim_veiculo (
+                sk_veiculo INTEGER NOT NULL DEFAULT nextval('public.dim_veiculo_sk_veiculo_seq'),
+                nk_veiculo INTEGER NOT NULL,
+                montadora VARCHAR NOT NULL,
+                modelo VARCHAR NOT NULL,
+                tipo VARCHAR NOT NULL,
+                status VARCHAR NOT NULL,
+                etl_dt_inicio TIMESTAMP NOT NULL,
+                etl_dt_fim TIMESTAMP NOT NULL,
+                etl_versao INTEGER NOT NULL,
+                CONSTRAINT sk_veiculo PRIMARY KEY (sk_veiculo)
+)
+130945 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+ALTER SEQUENCE public.dim_veiculo_sk_veiculo_seq OWNED BY public.dim_veiculo.sk_veiculo
+130945 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE TABLE public.ft_compra (
+                sk_veiculo INTEGER NOT NULL,
+                sk_fornecedor INTEGER NOT NULL,
+                sk_filial INTEGER NOT NULL,
+                sk_data INTEGER NOT NULL,
+                dt_compra DATE NOT NULL,
+                preco_compra REAL NOT NULL
+)
+130945 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+ALTER TABLE public.ft_compra ADD CONSTRAINT dim_data_ft_compra_fk
+FOREIGN KEY (sk_data)
+REFERENCES public.dim_data (sk_data)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE
+130945 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+ALTER TABLE public.ft_compra ADD CONSTRAINT dim_filial_ft_compra_fk
+FOREIGN KEY (sk_filial)
+REFERENCES public.dim_filial (sk_filial)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE
+130946 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+ALTER TABLE public.ft_compra ADD CONSTRAINT dim_fornecedor_ft_compra_fk
+FOREIGN KEY (sk_fornecedor)
+REFERENCES public.dim_fornecedor (sk_fornecedor)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE
+130946 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+ALTER TABLE public.ft_compra ADD CONSTRAINT dim_veiculo_ft_compra_fk
+FOREIGN KEY (sk_veiculo)
+REFERENCES public.dim_veiculo (sk_veiculo)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE
+130948 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - The list size is :15
+140440 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - SQL_FILE_FILTER:SQL Script Files:[sql, ddl]
+155561 [Thread-7] INFO  ca.sqlpower.sql.JDBCDataSource  - Driver Class org.postgresql.Driver loaded without exception
+156046 [Thread-7] ERROR ca.sqlpower.architect.ddl.ConflictResolver  - Sequence conflicts not supported.
+156061 [Thread-7] ERROR ca.sqlpower.architect.ddl.ConflictResolver  - Sequence conflicts not supported.
+156062 [Thread-7] ERROR ca.sqlpower.architect.ddl.ConflictResolver  - Sequence conflicts not supported.
+156076 [Thread-7] ERROR ca.sqlpower.architect.ddl.ConflictResolver  - Sequence conflicts not supported.
+156076 [Thread-7] ERROR ca.sqlpower.architect.ddl.ConflictResolver  - Sequence conflicts not supported.
+156090 [Thread-7] ERROR ca.sqlpower.architect.ddl.ConflictResolver  - Sequence conflicts not supported.
+156108 [Thread-7] ERROR ca.sqlpower.architect.ddl.ConflictResolver  - Relationship conflicts are not supported yet!
+156108 [Thread-7] ERROR ca.sqlpower.architect.ddl.ConflictResolver  - Relationship conflicts are not supported yet!
+156108 [Thread-7] ERROR ca.sqlpower.architect.ddl.ConflictResolver  - Relationship conflicts are not supported yet!
+156108 [Thread-7] ERROR ca.sqlpower.architect.ddl.ConflictResolver  - Relationship conflicts are not supported yet!
+166655 [Thread-9] INFO  ca.sqlpower.sql.JDBCDataSource  - Driver Class org.postgresql.Driver loaded without exception
+166714 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - Starting DDL Generation at Thu Nov 21 10:25:41 BRT 2024
+166714 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - Database Target: PlayPen Database
+166714 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - Playpen Dump: PlayPen Database
+166715 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - executing: 
+CREATE TABLE public.dim_data (
+                sk_data INTEGER NOT NULL,
+                nk_data DATE NOT NULL,
+                desc_data_completa VARCHAR(60) NOT NULL,
+                nr_ano INTEGER NOT NULL,
+                nm_trimestre VARCHAR(20) NOT NULL,
+                nr_ano_trimestre VARCHAR(20) NOT NULL,
+                nr_mes INTEGER NOT NULL,
+                nm_mes VARCHAR(20) NOT NULL,
+                ano_mes VARCHAR(20) NOT NULL,
+                nr_semana INTEGER NOT NULL,
+                ano_semana VARCHAR(20) NOT NULL,
+                nr_dia INTEGER NOT NULL,
+                nr_dia_ano INTEGER NOT NULL,
+                nm_dia_semana VARCHAR(20) NOT NULL,
+                flag_final_semana CHAR(3) NOT NULL,
+                flag_feriado CHAR(3) NOT NULL,
+                nm_feriado VARCHAR(60) NOT NULL,
+                etl_dt_inicio TIMESTAMP NOT NULL,
+                etl_dt_fim TIMESTAMP NOT NULL,
+                etl_versao INTEGER,
+                CONSTRAINT sk_data_pk PRIMARY KEY (sk_data)
+)
+166757 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - executing: 
+
+
+CREATE SEQUENCE public.dim_filial_sk_filial_seq
+166759 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - executing: 
+
+CREATE TABLE public.dim_filial (
+                sk_filial INTEGER NOT NULL DEFAULT nextval('public.dim_filial_sk_filial_seq'),
+                nk_filial INTEGER NOT NULL,
+                cidade VARCHAR NOT NULL,
+                estado VARCHAR NOT NULL,
+                etl_dt_inicio TIMESTAMP NOT NULL,
+                etl_dt_fim TIMESTAMP NOT NULL,
+                etl_versao INTEGER NOT NULL,
+                CONSTRAINT sk_filial PRIMARY KEY (sk_filial)
+)
+166827 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - executing: 
+
+
+ALTER SEQUENCE public.dim_filial_sk_filial_seq OWNED BY public.dim_filial.sk_filial
+166828 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - executing: 
+
+CREATE SEQUENCE public.dim_fornecedor_sk_fornecedor_seq
+166829 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - executing: 
+
+CREATE TABLE public.dim_fornecedor (
+                sk_fornecedor INTEGER NOT NULL DEFAULT nextval('public.dim_fornecedor_sk_fornecedor_seq'),
+                nk_fornecedor INTEGER NOT NULL,
+                cidade VARCHAR NOT NULL,
+                estado VARCHAR NOT NULL,
+                etl_dt_inicio TIMESTAMP NOT NULL,
+                etl_dt_fim TIMESTAMP NOT NULL,
+                etl_versao INTEGER NOT NULL,
+                CONSTRAINT sk_fornecedor PRIMARY KEY (sk_fornecedor)
+)
+166888 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - executing: 
+
+
+ALTER SEQUENCE public.dim_fornecedor_sk_fornecedor_seq OWNED BY public.dim_fornecedor.sk_fornecedor
+166889 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - executing: 
+
+CREATE SEQUENCE public.dim_veiculo_sk_veiculo_seq
+166890 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - executing: 
+
+CREATE TABLE public.dim_veiculo (
+                sk_veiculo INTEGER NOT NULL DEFAULT nextval('public.dim_veiculo_sk_veiculo_seq'),
+                nk_veiculo INTEGER NOT NULL,
+                montadora VARCHAR NOT NULL,
+                modelo VARCHAR NOT NULL,
+                tipo VARCHAR NOT NULL,
+                status VARCHAR NOT NULL,
+                etl_dt_inicio TIMESTAMP NOT NULL,
+                etl_dt_fim TIMESTAMP NOT NULL,
+                etl_versao INTEGER NOT NULL,
+                CONSTRAINT sk_veiculo PRIMARY KEY (sk_veiculo)
+)
+166949 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - executing: 
+
+
+ALTER SEQUENCE public.dim_veiculo_sk_veiculo_seq OWNED BY public.dim_veiculo.sk_veiculo
+166950 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - executing: 
+
+CREATE TABLE public.ft_compra (
+                sk_veiculo INTEGER NOT NULL,
+                sk_fornecedor INTEGER NOT NULL,
+                sk_filial INTEGER NOT NULL,
+                sk_data INTEGER NOT NULL,
+                dt_compra DATE NOT NULL,
+                preco_compra REAL NOT NULL
+)
+166951 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - executing: 
+
+
+ALTER TABLE public.ft_compra ADD CONSTRAINT dim_data_ft_compra_fk
+FOREIGN KEY (sk_data)
+REFERENCES public.dim_data (sk_data)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE
+166953 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - executing: 
+
+ALTER TABLE public.ft_compra ADD CONSTRAINT dim_filial_ft_compra_fk
+FOREIGN KEY (sk_filial)
+REFERENCES public.dim_filial (sk_filial)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE
+166954 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - executing: 
+
+ALTER TABLE public.ft_compra ADD CONSTRAINT dim_fornecedor_ft_compra_fk
+FOREIGN KEY (sk_fornecedor)
+REFERENCES public.dim_fornecedor (sk_fornecedor)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE
+166955 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - executing: 
+
+ALTER TABLE public.ft_compra ADD CONSTRAINT dim_veiculo_ft_compra_fk
+FOREIGN KEY (sk_veiculo)
+REFERENCES public.dim_veiculo (sk_veiculo)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE
+166957 [Thread-9] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - Successfully executed 15 out of 15 statements.
